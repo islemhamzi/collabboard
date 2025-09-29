@@ -1,0 +1,11 @@
+package com.collabboard.collab_backend.Repositories;
+
+
+
+import com.collabboard.collab_backend.Models.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
+
+public interface RoleRepository extends JpaRepository<Role, Long> {
+    Optional<Role> findByName(String name);
+}
