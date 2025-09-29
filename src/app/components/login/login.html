@@ -1,0 +1,23 @@
+<div class="login-container">
+  <div class="logo">
+    <img src="assets/logo.png" alt="Logo">
+  </div>
+
+  <h2>Login</h2>
+
+  <form (ngSubmit)="login()">
+    <div class="input-group">
+      <input type="text" [(ngModel)]="username" name="username" required placeholder=" ">
+      <label>Username</label>
+    </div>
+
+    <div class="input-group">
+      <input type="password" [(ngModel)]="password" name="password" required placeholder=" ">
+      <label>Password</label>
+    </div>
+
+    <button type="submit">Login</button>
+  </form>
+
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+</div>
