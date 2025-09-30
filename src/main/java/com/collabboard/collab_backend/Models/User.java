@@ -1,10 +1,14 @@
 package com.collabboard.collab_backend.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 
 @Entity
 @Getter @Setter
@@ -24,8 +28,13 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @JsonProperty()
     @Column(nullable = false)
     private String password;
+
+
+
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

@@ -44,17 +44,28 @@ public class AuthController {
         // Encode password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        // Assign default role (ROLE_USER)
         Set<Role> roles = new HashSet<>();
-        Role userRole = roleRepository.findByName("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("Error: Role not found."));
-        roles.add(userRole);
-        user.setRoles(roles);
 
+        if (user.getRoles() == null || user.getRoles().isEmpty()) {
+            // Assign default ROLE_USER
+            Role userRole = roleRepository.findByName("ROLE_USER")
+                    .orElseThrow(() -> new RuntimeException("Error: Role not found."));
+            roles.add(userRole);
+        } else {
+            // Assign roles from request
+            for (Role r : user.getRoles()) {
+                Role role = roleRepository.findByName(r.getName())
+                        .orElseThrow(() -> new RuntimeException("Error: Role not found."));
+                roles.add(role);
+            }
+        }
+
+        user.setRoles(roles);
         userRepository.save(user);
 
         return "User registered successfully!";
     }
+
 
     // ------------------- LOGIN -------------------
     @PostMapping("/login")

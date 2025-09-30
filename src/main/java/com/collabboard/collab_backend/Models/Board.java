@@ -21,10 +21,15 @@ public class Board {
 
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    private BoardStatus status = BoardStatus.TODO; // default
+
+
     // The owner of the board
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
+
 
     // Users who can access the board
     @ManyToMany
