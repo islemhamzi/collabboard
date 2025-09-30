@@ -1,1 +1,47 @@
-<p>admin-board works!</p>
+<div class="admin-board-container">
+  <h2>Admin Dashboard</h2>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button [class.active]="activeTab === 'users'" (click)="switchTab('users')">Users</button>
+    <button [class.active]="activeTab === 'boards'" (click)="switchTab('boards')">All Boards</button>
+  </div>
+
+  <!-- Users Tab -->
+  <div *ngIf="activeTab === 'users'" class="tab-content">
+    <div class="user-search">
+      <input type="text" placeholder="Search by username or email" [(ngModel)]="searchInput">
+      <button (click)="searchUser()">Search</button>
+    </div>
+
+    <div *ngIf="selectedUser" class="user-details">
+      <h3>{{ selectedUser.username }} ({{ selectedUser.email }})</h3>
+      <h4>User Boards:</h4>
+      <ul>
+        <li *ngFor="let board of userBoards">
+          {{ board.title }} - {{ board.description }}
+        </li>
+      </ul>
+    </div>
+
+    <p *ngIf="!selectedUser && searchInput">No user found.</p>
+  </div>
+
+  <!-- Boards Tab -->
+  <div *ngIf="activeTab === 'boards'" class="tab-content">
+    <div class="boards-grid">
+      <div *ngFor="let board of boards" class="board-card">
+        <h3>{{ board.title }}</h3>
+        <p>{{ board.description }}</p>
+        <p>Owner: {{ board.owner.username }}</p>
+        <div class="users">
+          Users: 
+          <span *ngFor="let user of board.users; let i = index">
+            {{ user.username }}<span *ngIf="i < board.users.length - 1">, </span>
+          </span>
+        </div>
+        <button class="delete-btn" (click)="deleteBoard(board.id)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

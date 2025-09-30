@@ -1,0 +1,113 @@
+.trello-board {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 20px;
+  background: #f4f5f7;
+  min-height: 100vh;
+  overflow-x: auto;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Columns */
+.column {
+  background: #ebecf0;
+  border-radius: 10px;
+  padding: 15px;
+  width: 300px;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.column h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #172b4d;
+}
+
+/* Cards */
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  cursor: grab;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.card:active {
+  cursor: grabbing;
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-header h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #172b4d;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.delete-btn:hover {
+  color: #e74c3c;
+}
+
+.description {
+  font-size: 0.9rem;
+  color: #5e6c84;
+  margin: 5px 0;
+}
+
+.owner {
+  font-size: 0.85rem;
+  color: #42526e;
+}
+
+/* Add Card section */
+.add-card {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.add-card input {
+  padding: 8px;
+  border: 1px solid #dfe1e6;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.add-card button {
+  padding: 8px;
+  background: #0079bf;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.add-card button:hover {
+  background: #026aa7;
+}
