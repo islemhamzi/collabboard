@@ -5,6 +5,7 @@
     import com.collabboard.collab_backend.Models.User;
     import com.collabboard.collab_backend.Repositories.BoardRepository;
     import com.collabboard.collab_backend.Repositories.UserRepository;
+    import com.collabboard.collab_backend.Services.BoardService;
     import lombok.RequiredArgsConstructor;
     import org.springframework.http.ResponseEntity;
     import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +13,7 @@
 
     import java.security.Principal;
     import java.util.List;
+    import java.util.Map;
 
     @RestController
     @RequestMapping("/api/boards")
@@ -20,6 +22,9 @@
 
         private final BoardRepository boardRepository;
         private final UserRepository userRepository;
+        private final BoardService boardService;
+
+
 
         // Get all boards accessible to the user
         @GetMapping
@@ -30,6 +35,10 @@
             } else {
                 return boardRepository.findByUsersContaining(user);
             }
+        }
+        @GetMapping("/by-user")
+        public Map<User, List<Board>> getBoardsByUsername(@RequestParam String username) {
+            return boardService.getBoardsByUsername(username);
         }
 
         // Create a new board
@@ -50,7 +59,7 @@
         public void deleteBoard(@PathVariable Long id) {
             boardRepository.deleteById(id);
         }
-
+        @PreAuthorize("hasRole('ADMIN') or @boardSecurity.isOwner(#id, authentication.name)")
         @PutMapping("/{id}")
         public ResponseEntity<Board> updateBoard(@PathVariable Long id, @RequestBody Board updatedBoard) {
             return boardRepository.findById(id)
