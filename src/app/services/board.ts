@@ -27,4 +27,7 @@ export class BoardService {
   updateBoard(id: number, board: Partial<Board>): Observable<Board> {
     return this.http.put<Board>(`${this.baseUrl}/${id}`, board);
   }
+  getBoardsByUsername(username: string): Observable<Board[]> {
+    return this.http.get<Board[]>(`${this.baseUrl}/user/${username}`);
+  }
 }

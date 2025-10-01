@@ -35,7 +35,7 @@
         <p>{{ board.description }}</p>
         <p>Owner: {{ board.owner.username }}</p>
         <div class="users">
-          Users: 
+          Users:
           <span *ngFor="let user of board.users; let i = index">
             {{ user.username }}<span *ngIf="i < board.users.length - 1">, </span>
           </span>

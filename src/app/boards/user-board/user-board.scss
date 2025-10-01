@@ -1,113 +1,211 @@
+.trello-board-wrapper {
+  padding: 15px;
+  overflow-x: auto;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  // Dark night gradient background
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  background-attachment: fixed;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
 .trello-board {
   display: flex;
   gap: 20px;
-  align-items: flex-start;
-  padding: 20px;
-  background: #f4f5f7;
-  min-height: 100vh;
-  overflow-x: auto;
-  font-family: 'Inter', sans-serif;
+  min-width: 600px;
+  padding-bottom: 20px;
+
+  .column {
+    border-radius: 12px;
+    padding: 15px;
+    min-width: 280px;
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh;
+    backdrop-filter: blur(15px);
+    background: rgba(20, 20, 30, 0.6);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+
+    // Neon glow on hover
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 20px rgba(66,230,149,0.6);
+    }
+
+    h3 {
+      text-align: center;
+      margin-bottom: 15px;
+      color: #fff;
+      font-weight: 600;
+      text-shadow: 0 1px 5px rgba(0,0,0,0.5);
+      transition: text-shadow 0.3s;
+
+      &:hover {
+        text-shadow: 0 0 10px #42e695, 0 0 20px #38f9d7;
+      }
+    }
+
+    .card {
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      cursor: grab;
+      color: #fff;
+      font-weight: 500;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      transition: transform 0.3s, box-shadow 0.3s, filter 0.3s;
+
+      // Neon gradient cards
+      &:nth-child(3n+1) { background: linear-gradient(135deg, #ff6ec4, #7873f5); }
+      &:nth-child(3n+2) { background: linear-gradient(135deg, #42e695, #38f9d7); }
+      &:nth-child(3n+3) { background: linear-gradient(135deg, #fbc2eb, #a6c1ee); }
+
+      // Glow effect on hover
+      &:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 0 20px rgba(255,255,255,0.3), 0 10px 20px rgba(0,0,0,0.5);
+        filter: brightness(1.1);
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h4 {
+          margin: 0;
+          font-size: 1rem;
+        }
+
+        .delete-btn {
+          border: none;
+          background: rgba(255,255,255,0.2);
+          color: #fff;
+          font-size: 1.2rem;
+          border-radius: 50%;
+          width: 28px;
+          height: 28px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+
+          &:hover {
+            background: rgba(255,255,255,0.5);
+            transform: scale(1.2);
+            box-shadow: 0 0 10px #fff;
+          }
+        }
+      }
+
+      .description, .owner {
+        font-size: 0.85rem;
+        margin-top: 4px;
+        color: rgba(255,255,255,0.9);
+        text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+      }
+    }
+
+    .add-card {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      input {
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.2);
+        font-size: 0.9rem;
+        background: rgba(0,0,0,0.4);
+        color: #fff;
+        transition: border-color 0.3s, box-shadow 0.3s;
+
+        &:focus {
+          outline: none;
+          border-color: #42e695;
+          box-shadow: 0 0 8px rgba(66,230,149,0.6);
+        }
+      }
+
+      button {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 8px;
+        background: #42e695;
+        color: #0f2027;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s, box-shadow 0.3s;
+
+        &:hover {
+          background: #38f9d7;
+          transform: translateY(-2px);
+          box-shadow: 0 0 15px #42e695;
+        }
+
+        &:active {
+          transform: translateY(0);
+          box-shadow: none;
+        }
+      }
+    }
+  }
 }
 
-/* Columns */
-.column {
-  background: #ebecf0;
-  border-radius: 10px;
-  padding: 15px;
-  width: 300px;
-  min-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+// Responsive
+@media (max-width: 768px) {
+  .trello-board {
+    flex-direction: column;
+    min-width: 100%;
+  }
+}
+.dark-mode {
+  background: #1e1e2f;
+  color: #f0f0f0;
 }
 
-.column h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: #172b4d;
+.dark-board .column {
+  background: #2c2c3e !important;
 }
 
-/* Cards */
-.card {
-  background: #fff;
-  border-radius: 8px;
-  padding: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  cursor: grab;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
+.dark-board .card {
+  color: #fff !important;
 }
 
-.card:active {
-  cursor: grabbing;
-  transform: scale(1.02);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.card-header h4 {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #172b4d;
-}
-
-.delete-btn {
-  background: transparent;
+.mode-toggle-btn {
+  padding: 6px 12px;
   border: none;
-  font-size: 1.2rem;
-  color: #888;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.delete-btn:hover {
-  color: #e74c3c;
-}
-
-.description {
-  font-size: 0.9rem;
-  color: #5e6c84;
-  margin: 5px 0;
-}
-
-.owner {
-  font-size: 0.85rem;
-  color: #42526e;
-}
-
-/* Add Card section */
-.add-card {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.add-card input {
-  padding: 8px;
-  border: 1px solid #dfe1e6;
   border-radius: 6px;
-  font-size: 0.9rem;
-}
-
-.add-card button {
-  padding: 8px;
-  background: #0079bf;
+  background: #3b82f6;
   color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease;
-}
+  transition: background 0.2s;
+  margin-left: auto;
 
-.add-card button:hover {
-  background: #026aa7;
+  &:hover {
+    background: #2563eb;
+  }
 }

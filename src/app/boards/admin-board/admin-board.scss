@@ -1,38 +1,38 @@
 .admin-board-container {
-  padding: 30px;
-  background: #f5f7fa;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
 
   h2 {
     text-align: center;
-    font-size: 2rem;
-    color: #333;
+    margin-bottom: 20px;
+    color: #222;
   }
 
+  // Tabs
   .tabs {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
     margin-bottom: 20px;
 
     button {
-      padding: 10px 20px;
+      padding: 8px 16px;
       border: none;
-      border-radius: 8px;
-      background: #e0e0e0;
+      border-radius: 6px;
       cursor: pointer;
+      background: #f0f0f0;
+      color: #333;
       font-weight: bold;
-      transition: all 0.2s;
+      transition: background 0.2s;
 
       &.active {
         background: #2575fc;
         color: #fff;
       }
 
-      &:hover:not(.active) {
+      &:hover {
         background: #d0d0d0;
       }
     }
@@ -42,27 +42,30 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    align-items: center;
 
+    // User search
     .user-search {
       display: flex;
+      flex-wrap: wrap;
       gap: 10px;
+      justify-content: center;
 
       input {
         padding: 8px 12px;
         border-radius: 6px;
         border: 1px solid #ccc;
-        width: 250px;
+        flex: 1 1 200px;
       }
 
       button {
-        padding: 8px 15px;
+        padding: 8px 16px;
         border: none;
         border-radius: 6px;
         background: #2575fc;
         color: #fff;
         font-weight: bold;
         cursor: pointer;
+        transition: background 0.2s;
 
         &:hover {
           background: #1a5fd4;
@@ -71,47 +74,66 @@
     }
 
     .user-details {
-      background: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      width: 100%;
-      max-width: 600px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 
-      h3 { margin-bottom: 10px; }
-      h4 { margin: 10px 0; }
+      h3 {
+        margin: 0 0 10px 0;
+        color: #333;
+      }
+
+      h4 {
+        margin: 10px 0 5px;
+        color: #555;
+      }
+
       ul {
-        list-style: none;
-        padding: 0;
+        list-style: disc;
+        padding-left: 20px;
+
         li {
-          padding: 5px 0;
-          border-bottom: 1px solid #eee;
+          margin-bottom: 5px;
+          color: #444;
         }
       }
     }
 
+    // Boards grid
     .boards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
 
       .board-card {
         background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
         color: #fff;
-        padding: 20px;
+        padding: 15px;
         border-radius: 12px;
         position: relative;
         transition: transform 0.2s, box-shadow 0.2s;
-        cursor: pointer;
 
         &:hover {
           transform: translateY(-5px);
           box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
-        h3 { margin: 0 0 10px; }
-        p { margin: 5px 0; opacity: 0.9; }
-        .users { margin-top: 10px; font-size: 0.85rem; color: rgba(255, 255, 255, 0.8); }
+        h3 {
+          margin: 0 0 10px 0;
+        }
+
+        p {
+          margin: 5px 0;
+          font-size: 0.9rem;
+          opacity: 0.9;
+        }
+
+        .users {
+          margin-top: 10px;
+          font-size: 0.85rem;
+          opacity: 0.8;
+        }
 
         .delete-btn {
           position: absolute;
@@ -126,9 +148,28 @@
           font-size: 0.8rem;
           transition: background 0.2s;
 
-          &:hover { background: rgba(255,0,0,0.9); }
+          &:hover {
+            background: rgba(255,0,0,0.9);
+          }
         }
       }
     }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .tabs {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tab-content .boards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .user-search {
+    flex-direction: column;
+    align-items: stretch;
   }
 }

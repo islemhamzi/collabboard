@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DragDropModule, CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { BoardService } from '../../services/board';
+import { UserService } from '../../services/user';
 import { Board } from '../../models/board.model';
 
 @Component({
@@ -15,52 +16,72 @@ import { Board } from '../../models/board.model';
 })
 export class UserBoardComponent implements OnInit {
   boards: Board[] = [];
-  newBoardInputs: { [key: string]: { title: string; description: string } } = {};
   loading = false;
-
+  usernameQuery: string = '';
   statuses: string[] = ['TODO', 'IN_PROGRESS', 'DONE'];
+  dropListIds = this.statuses;
+  newBoardInputs: { [key: string]: { title: string; description: string } } = {};
+  darkMode: boolean = false;
 
   constructor(private boardService: BoardService) {
-    this.statuses.forEach(s => this.newBoardInputs[s] = { title: '', description: '' });
+    this.statuses.forEach(status => {
+      this.newBoardInputs[status] = { title: '', description: '' };
+    });
   }
 
   ngOnInit(): void {
-    this.fetchBoards();
+    // Optionally, fetch all boards on init
+    // this.fetchBoards();
   }
 
-  fetchBoards() {
+  // === Search boards by username ===
+  searchBoardsByUsername() {
+    if (!this.usernameQuery.trim()) return;
+
     this.loading = true;
-    this.boardService.getBoards().subscribe({
-      next: (data) => { this.boards = data; this.loading = false; },
-      error: () => { this.loading = false; }
+    this.boardService.getBoardsByUsername(this.usernameQuery).subscribe({
+      next: (data) => {
+        this.boards = data;
+        this.loading = false;
+      },
+      error: () => {
+        this.boards = [];
+        this.loading = false;
+      }
     });
   }
 
   boardsByStatus(status: string): Board[] {
-    return this.boards.filter(b => b.status === status);
+    return this.boards.filter(board => board.status === status);
   }
 
   addBoard(status: string) {
-    const { title, description } = this.newBoardInputs[status];
-    if (!title.trim()) return;
+    const input = this.newBoardInputs[status];
+    if (!input.title.trim()) return;
 
-    const board: Partial<Board> = { title, description, status };
+    const board: Partial<Board> = {
+      title: input.title,
+      description: input.description,
+      status: status
+    };
 
     this.boardService.createBoard(board).subscribe({
       next: (created) => {
         this.boards.push(created);
-        this.newBoardInputs[status] = { title: '', description: '' };
+        input.title = '';
+        input.description = '';
       }
     });
   }
 
   deleteBoard(boardId: number) {
     this.boardService.deleteBoard(boardId).subscribe({
-      next: () => this.boards = this.boards.filter(b => b.id !== boardId)
+      next: () => {
+        this.boards = this.boards.filter(b => b.id !== boardId);
+      }
     });
   }
 
-  // Handle drag & drop
   drop(event: CdkDragDrop<Board[]>, newStatus: string) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -68,15 +89,22 @@ export class UserBoardComponent implements OnInit {
       const board = event.previousContainer.data[event.previousIndex];
       board.status = newStatus;
 
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-
-      // Persist status update to backend
-      this.boardService.updateBoard(board.id!, board).subscribe();
+      this.boardService.updateBoard(board.id, board).subscribe({
+        next: () => {
+          transferArrayItem(
+            event.previousContainer.data,
+            event.container.data,
+            event.previousIndex,
+            event.currentIndex
+          );
+        },
+        error: (err) => console.error(err)
+      });
     }
+  }
+
+  toggleDarkMode() {
+    this.darkMode = !this.darkMode;
+    document.body.classList.toggle('dark-mode', this.darkMode);
   }
 }
